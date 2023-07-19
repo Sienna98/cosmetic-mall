@@ -4,12 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: '/:path*',
-      },
-      {
-        source: '/api:path*',
-        destination: 'localhost:3000/:path*',
+        source: "/v1/:path*",
+        destination: "https://makeup-api.herokuapp.com/api/v1/:path*",
       },
     ];
   },
