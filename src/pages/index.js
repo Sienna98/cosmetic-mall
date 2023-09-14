@@ -1,10 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import SideBar from "@/component/SideBar";
 import { useEffect, useState } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
-// TODO : brand length가 10개 이하인 경우 제거
 const filterByBrand = (products) => {
   return [
     ...new Set(
@@ -27,69 +24,82 @@ export default function Home() {
         return res.json();
       })
       .then((res) => {
-        console.log("res", res);
-        const temp = filterByBrand(res);
+        // console.log("res", res);
+        const temp = filterByBrand(res).filter((item) => {
+          if (item.products.length > 10) {
+            return item;
+          }
+        });
+        const indexOfDior = temp.findIndex((i) => i.brand === "dior");
+        temp.splice(indexOfDior, 3);
+        // console.log(
+        //   "brand",
+        //   temp.map((i) => i.brand)
+        // );
         setProductByBrand(temp);
       })
       .catch((error) => {
-        console.log("error", error);
+        // console.log("error", error);
       });
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        flexWrap: "nowrap",
-      }}
-    >
-      {productByBrand?.map(({ brand, products }) => (
-        <div
-          key={brand}
-          style={{
-            padding: 10,
-            border: "1px solid #cccccc",
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "column",
-            gap: 30,
-          }}
-        >
-          <h1 style={{ fontSize: 22, fontWeight: 600 }}>{brand}</h1>
+    <div style={{ display: "flex", gap: "40px" }}>
+      <SideBar asdf={productByBrand} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          flexWrap: "nowrap",
+        }}
+      >
+        {productByBrand?.map(({ brand, products }) => (
+          <div
+            key={brand}
+            style={{
+              padding: 10,
+              border: "1px solid #cccccc",
+              borderRadius: 10,
+              display: "flex",
+              flexDirection: "column",
+              gap: 30,
+            }}
+          >
+            <h1 style={{ fontSize: 22, fontWeight: 600 }}>{brand}</h1>
 
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {products.map((product) => (
-              <div
-                key={product.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {products.map((product) => (
                 <div
+                  key={product.id}
                   style={{
-                    width: 350,
-                    height: 350,
-                    border: "1px solid #dddddd",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                   }}
                 >
-                  <img
-                    src={product.image_link}
-                    alt={product.name}
-                    style={{ width: "100%", height: "100%" }}
-                  />
+                  <div
+                    style={{
+                      width: 350,
+                      height: 350,
+                      border: "1px solid #dddddd",
+                    }}
+                  >
+                    <img
+                      src={product.image_link}
+                      alt={product.name}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                  <span>
+                    {product.name} ${product.price}
+                  </span>
                 </div>
-                <span>
-                  {product.name} ${product.price}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
