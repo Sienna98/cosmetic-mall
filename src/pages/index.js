@@ -17,6 +17,7 @@ const filterByBrand = (products) => {
 
 export default function Home() {
   const [productByBrand, setProductByBrand] = useState([]);
+  const [originData, setOriginData] = useState([]);
 
   useEffect(() => {
     fetch("/api/products")
@@ -37,6 +38,7 @@ export default function Home() {
         //   temp.map((i) => i.brand)
         // );
         setProductByBrand(temp);
+        setOriginData(temp);
       })
       .catch((error) => {
         // console.log("error", error);
@@ -44,8 +46,19 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ display: "flex", gap: "40px" }}>
-      <SideBar asdf={productByBrand} />
+    <div
+      style={{
+        display: "flex",
+        gap: "40px",
+      }}
+    >
+      <div style={{ position: "relative" }}>
+        <SideBar
+          productByBrand={productByBrand}
+          setProductByBrand={setProductByBrand}
+          originData={originData}
+        />
+      </div>
       <div
         style={{
           display: "flex",
