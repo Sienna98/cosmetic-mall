@@ -4,7 +4,7 @@ const SideBar = ({ setProductByBrand, originData }) => {
   return (
     <ul style={{ width: "230px", padding: "40px", flexShrink: "0" }}>
       <li
-        style={{ cursor: "pointer" }}
+        style={{ marginBottom: "8px", cursor: "pointer" }}
         onClick={() => setProductByBrand(originData)}
       >
         All
