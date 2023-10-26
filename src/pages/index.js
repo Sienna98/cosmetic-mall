@@ -20,6 +20,7 @@ const filterByBrand = (products) => {
 
 export default function Home() {
   const [productByBrand, setProductByBrand] = useState([]);
+  const [originData, setOriginData] = useState([]);
 
   useEffect(() => {
     fetch("/api/products")
@@ -36,12 +37,13 @@ export default function Home() {
         temp.splice(indexOfDior, 3);
 
         setProductByBrand(temp);
+        setOriginData(temp);
       });
   }, []);
 
   return (
     <div style={{ display: "flex" }}>
-      <SideBar brandName={productByBrand} />
+      <SideBar setProductByBrand={setProductByBrand} originData={originData} />
       <section
         style={{
           display: "flex",
